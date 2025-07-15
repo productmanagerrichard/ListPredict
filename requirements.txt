@@ -1,6 +1,4 @@
-pandas
 streamlit
-lightgbm
-Pillow
+pandas
 numpy
-scikit-learn
+Pillow
