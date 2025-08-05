@@ -611,228 +611,63 @@
     <div class="print-labels" id="printLabels"></div>
 
     <script>
-        // Static property data matching the model output structure
-        let propertyData = [
-            {
-                SSL: "0123 0001",
-                PREMISEADD: "1234 Connecticut Ave NW",
-                OWNERNAME: "Smith, John A",
-                ADDRESS1: "123 Main Street",
-                ADDRESS2: "",
-                CITYSTZIP: "Washington, DC 20001",
-                listing_probability: 0.92,
-                risk_category: "Extremely High",
-                ASSESSMENT: 750000,
-                TOTBALAMT: 85000,
-                PRMS_WARD: "1",
-                PROPTYPE: "Residential",
-                years_since_last_sale: 15.3,
-                debt_to_assessment_ratio: 0.113,
-                financial_distress_score: 6,
-                ownership_complexity_score: 1,
-                assessment_shock_score: 2,
-                corporate_owner: false,
-                trust_ownership: false,
-                estate_ownership: false
-            },
-            {
-                SSL: "0124 0002",
-                PREMISEADD: "5678 Georgia Ave NW",
-                OWNERNAME: "Johnson Family Trust",
-                ADDRESS1: "456 Oak Avenue",
-                ADDRESS2: "Apt 3B",
-                CITYSTZIP: "Washington, DC 20002",
-                listing_probability: 0.87,
-                risk_category: "Extremely High",
-                ASSESSMENT: 680000,
-                TOTBALAMT: 42000,
-                PRMS_WARD: "4",
-                PROPTYPE: "Condominium",
-                years_since_last_sale: 8.7,
-                debt_to_assessment_ratio: 0.062,
-                financial_distress_score: 5,
-                ownership_complexity_score: 3,
-                assessment_shock_score: 1,
-                corporate_owner: false,
-                trust_ownership: true,
-                estate_ownership: false
-            },
-            {
-                SSL: "0125 0003",
-                PREMISEADD: "910 H Street NE",
-                OWNERNAME: "Williams, Maria Estate",
-                ADDRESS1: "789 Pine Street",
-                ADDRESS2: "",
-                CITYSTZIP: "Washington, DC 20003",
-                listing_probability: 0.84,
-                risk_category: "Extremely High",
-                ASSESSMENT: 550000,
-                TOTBALAMT: 38000,
-                PRMS_WARD: "6",
-                PROPTYPE: "Residential",
-                years_since_last_sale: 22.1,
-                debt_to_assessment_ratio: 0.069,
-                financial_distress_score: 4,
-                ownership_complexity_score: 4,
-                assessment_shock_score: 3,
-                corporate_owner: false,
-                trust_ownership: false,
-                estate_ownership: true
-            },
-            {
-                SSL: "0126 0004",
-                PREMISEADD: "1122 Martin Luther King Jr Ave SE",
-                OWNERNAME: "Brown Properties LLC",
-                ADDRESS1: "321 Elm Drive",
-                ADDRESS2: "Suite 200",
-                CITYSTZIP: "Washington, DC 20020",
-                listing_probability: 0.79,
-                risk_category: "Very High",
-                ASSESSMENT: 420000,
-                TOTBALAMT: 28000,
-                PRMS_WARD: "8",
-                PROPTYPE: "Commercial",
-                years_since_last_sale: 3.2,
-                debt_to_assessment_ratio: 0.067,
-                financial_distress_score: 3,
-                ownership_complexity_score: 2,
-                assessment_shock_score: 2,
-                corporate_owner: true,
-                trust_ownership: false,
-                estate_ownership: false
-            },
-            {
-                SSL: "0127 0005",
-                PREMISEADD: "3344 Wisconsin Ave NW",
-                OWNERNAME: "Davis, Robert & Sarah",
-                ADDRESS1: "654 Maple Avenue",
-                ADDRESS2: "",
-                CITYSTZIP: "Washington, DC 20016",
-                listing_probability: 0.74,
-                risk_category: "Very High",
-                ASSESSMENT: 1200000,
-                TOTBALAMT: 65000,
-                PRMS_WARD: "3",
-                PROPTYPE: "Residential",
-                years_since_last_sale: 12.8,
-                debt_to_assessment_ratio: 0.054,
-                financial_distress_score: 4,
-                ownership_complexity_score: 1,
-                assessment_shock_score: 1,
-                corporate_owner: false,
-                trust_ownership: false,
-                estate_ownership: false
-            },
-            {
-                SSL: "0128 0006",
-                PREMISEADD: "5566 Rhode Island Ave NE",
-                OWNERNAME: "Miller Holdings Inc",
-                ADDRESS1: "987 Cedar Street",
-                ADDRESS2: "",
-                CITYSTZIP: "Washington, DC 20018",
-                listing_probability: 0.71,
-                risk_category: "Very High",
-                ASSESSMENT: 380000,
-                TOTBALAMT: 22000,
-                PRMS_WARD: "5",
-                PROPTYPE: "Mixed Use",
-                years_since_last_sale: 6.4,
-                debt_to_assessment_ratio: 0.058,
-                financial_distress_score: 3,
-                ownership_complexity_score: 2,
-                assessment_shock_score: 2,
-                corporate_owner: true,
-                trust_ownership: false,
-                estate_ownership: false
-            },
-            {
-                SSL: "0129 0007",
-                PREMISEADD: "7788 Pennsylvania Ave SE",
-                OWNERNAME: "Wilson, Jennifer Trust",
-                ADDRESS1: "147 Birch Lane",
-                ADDRESS2: "",
-                CITYSTZIP: "Washington, DC 20003",
-                listing_probability: 0.68,
-                risk_category: "Very High",
-                ASSESSMENT: 620000,
-                TOTBALAMT: 34000,
-                PRMS_WARD: "6",
-                PROPTYPE: "Condominium",
-                years_since_last_sale: 18.9,
-                debt_to_assessment_ratio: 0.055,
-                financial_distress_score: 3,
-                ownership_complexity_score: 3,
-                assessment_shock_score: 1,
-                corporate_owner: false,
-                trust_ownership: true,
-                estate_ownership: false
-            }
-        ];
-        
-        // Add more sample data to reach 50+ properties
-        const propertyTypes = ["Residential", "Condominium", "Commercial", "Mixed Use", "Cooperative", "Vacant Land"];
-        
-        for (let i = 8; i <= 50; i++) {
-            const addresses = [
-                "Connecticut Ave NW", "Georgia Ave NW", "Wisconsin Ave NW", "16th Street NW",
-                "H Street NE", "Rhode Island Ave NE", "Benning Rd NE", "Florida Ave NE",
-                "Pennsylvania Ave SE", "Alabama Ave SE", "Martin Luther King Jr Ave SE", "Good Hope Rd SE",
-                "Wisconsin Ave NW", "Massachusetts Ave NW", "K Street NW", "L Street NW"
-            ];
-            
-            const owners = [
-                "Anderson, Michael", "Thompson Family Trust", "Garcia Properties LLC", "Martinez, Carlos",
-                "Robinson Estate", "Clark Holdings", "Rodriguez, Maria", "Lewis Trust",
-                "Lee Properties", "Walker, James", "Hall Holdings LLC", "Allen Estate",
-                "Young Trust", "Hernandez, Patricia", "King Properties", "Wright Holdings"
-            ];
-            
-            const wards = ["1", "2", "3", "4", "5", "6", "7", "8"];
-            
-            const probability = Math.max(0.15, Math.random() * 0.85);
-            const riskCategory = probability >= 0.8 ? "Extremely High" :
-                               probability >= 0.6 ? "Very High" :
-                               probability >= 0.4 ? "High" :
-                               probability >= 0.2 ? "Moderate" : "Low";
-            
-            const owner = owners[i % owners.length];
-            const corporate = /LLC|INC|CORP|PROPERTIES|HOLDINGS/.test(owner);
-            const trust = /TRUST/.test(owner);
-            const estate = /ESTATE/.test(owner);
-            
-            const assessment = Math.floor(Math.random() * 1000000) + 250000;
-            const debtRatio = Math.random() * 0.15;
-            const totalBalance = Math.floor(assessment * debtRatio);
-            
-            propertyData.push({
-                SSL: `0${100 + i} 000${i}`,
-                PREMISEADD: `${1000 + i * 100} ${addresses[i % addresses.length]}`,
-                OWNERNAME: owner,
-                ADDRESS1: `${100 + i} Sample Street`,
-                ADDRESS2: i % 3 === 0 ? `Apt ${i}` : "",
-                CITYSTZIP: `Washington, DC 200${10 + (i % 20)}`,
-                listing_probability: probability,
-                risk_category: riskCategory,
-                ASSESSMENT: assessment,
-                TOTBALAMT: totalBalance,
-                PRMS_WARD: wards[i % wards.length],
-                PROPTYPE: propertyTypes[i % propertyTypes.length],
-                years_since_last_sale: Math.random() * 30,
-                debt_to_assessment_ratio: debtRatio,
-                financial_distress_score: Math.floor(Math.random() * 8),
-                ownership_complexity_score: Math.floor(Math.random() * 5),
-                assessment_shock_score: Math.floor(Math.random() * 4),
-                corporate_owner: corporate,
-                trust_ownership: trust,
-                estate_ownership: estate
-            });
-        }
-        
-        // Sort by listing probability (highest first)
-        propertyData.sort((a, b) => b.listing_probability - a.listing_probability);
-        
-        let filteredData = [...propertyData];
+        // Global variable to hold property data
+        let propertyData = [];
+        let filteredData = [];
         let selectedRiskLevels = [];
+
+        // Load property data from JSON file
+        async function loadPropertyData() {
+            try {
+                const response = await fetch('dc_property_predictions.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                
+                console.log(`Loaded ${data.length} property records from JSON`);
+                propertyData = data;
+                filteredData = [...propertyData];
+                
+                // Initialize the application after data is loaded
+                populatePropertyTypes();
+                applyFilters();
+                
+                // Hide loading message if it exists
+                const loadingElement = document.getElementById('loadingMessage');
+                if (loadingElement) {
+                    loadingElement.style.display = 'none';
+                }
+                
+            } catch (error) {
+                console.error('Error loading property data:', error);
+                showErrorMessage('Failed to load property data. Please check that dc_property_predictions.json is available.');
+            }
+        }
+
+        // Show error message to user
+        function showErrorMessage(message) {
+            const noDataMessage = document.getElementById('noDataMessage');
+            if (noDataMessage) {
+                noDataMessage.innerHTML = `
+                    <div class="no-data-icon">⚠️</div>
+                    <h3>Data Loading Error</h3>
+                    <p>${message}</p>
+                `;
+                noDataMessage.style.display = 'block';
+            }
+        }
+
+        // Show loading message while data loads
+        function showLoadingMessage() {
+            const noDataMessage = document.getElementById('noDataMessage');
+            if (noDataMessage) {
+                noDataMessage.innerHTML = `
+                    <div class="loading">Loading property data...</div>
+                `;
+                noDataMessage.style.display = 'block';
+            }
+        }
         
         // Multi-select functionality
         function toggleRiskDropdown() {
@@ -1174,15 +1009,15 @@
             console.log('All tests completed. Check individual test results above.');
         }
         
-        // Initialize the application
-        function initializeApp() {
-            populatePropertyTypes();
-            applyFilters(); // Load initial data
-        }
-        
-        // Run tests on page load (remove this in production)
+        // Update the DOMContentLoaded event listener
         document.addEventListener('DOMContentLoaded', function() {
-            initializeApp();
+            console.log('DOM loaded, initializing application...');
+            
+            // Show loading message
+            showLoadingMessage();
+            
+            // Load data and initialize
+            loadPropertyData();
             
             // Uncomment the line below to run unit tests on page load
             // runUnitTests();
