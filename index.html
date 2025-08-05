@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DC Property Marketing Leads</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 12px;
+            font-weight: 600;
+            letter-spacing: -1px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.2em;
+            font-weight: 300;
+        }
+        
+        .controls {
+            padding: 35px;
+            background: #f8f9fc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .control-group label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2d3748;
+            font-size: 0.95em;
+        }
+        
+        .control-group select,
+        .control-group input {
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .control-group select:focus,
+        .control-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .multi-select {
+            position: relative;
+        }
+        
+        .multi-select-dropdown {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px 16px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+        
+        .multi-select-dropdown:hover {
+            border-color: #667eea;
+        }
+        
+        .multi-select-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: none;
+            max-height: 220px;
+            overflow-y: auto;
+            margin-top: 4px;
+        }
+        
+        .multi-select-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.2s ease;
+        }
+        
+        .multi-select-option:hover {
+            background: #f7fafc;
+        }
+        
+        .multi-select-option input[type="checkbox"] {
+            margin: 0;
+            transform: scale(1.1);
+        }
+        
+        .range-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #718096 0%, #4a5568 100%);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .stats {
+            padding: 25px 35px;
+            background: #fff;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 25px 20px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .stat-value {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            color: #718096;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        
+        .table-container {
+            padding: 35px;
+            max-height: 700px;
+            overflow-y: auto;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .data-table th {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            color: white;
+            padding: 18px 14px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            letter-spacing: 0.5px;
+        }
+        
+        .data-table td {
+            padding: 16px 14px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.9em;
+        }
+        
+        .data-table tbody tr:hover {
+            background: #f8fafc;
+        }
+        
+        .data-table tbody tr:nth-child(even) {
+            background: #fbfcfd;
+        }
+        
+        .data-table tbody tr:nth-child(even):hover {
+            background: #f1f5f9;
+        }
+        
+        .risk-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-align: center;
+            display: inline-block;
+            min-width: 90px;
+        }
+        
+        .risk-extremely-high {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+        
+        .risk-very-high {
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+            color: white;
+        }
+        
+        .risk-high {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #1f2937;
+        }
+        
+        .risk-moderate {
+            background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%);
+            color: white;
+        }
+        
+        .risk-low {
+            background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+            color: white;
+        }
+        
+        .probability-container {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 100px;
+        }
+        
+        .probability-bar {
+            background: #e2e8f0;
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .probability-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.4s ease;
+        }
+        
+        .probability-text {
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #4a5568;
+        }
+        
+        .currency {
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .address-cell {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .owner-cell {
+            max-width: 180px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 80px;
+            color: #718096;
+        }
+        
+        .no-data-icon {
+            font-size: 4em;
+            margin-bottom: 25px;
+            opacity: 0.4;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+        
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 12px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Print styles for Avery labels */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            
+            .print-labels,
+            .print-labels * {
+                visibility: visible;
+            }
+            
+            .print-labels {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white;
+            }
+            
+            .label-page {
+                width: 8.5in;
+                height: 11in;
+                margin: 0;
+                padding: 0.5in 0.1875in;
+                page-break-after: always;
+            }
+            
+            .label-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 2.625in);
+                grid-template-rows: repeat(10, 1in);
+                gap: 0.125in;
+                width: 100%;
+                height: 100%;
+            }
+            
+            .label {
+                border: 1px solid #ccc;
+                padding: 0.1in;
+                font-size: 11pt;
+                font-family: Arial, sans-serif;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                overflow: hidden;
+            }
+            
+            .label-name {
+                font-weight: bold;
+                margin-bottom: 2px;
+            }
+            
+            .label-address {
+                line-height: 1.2;
+            }
+        }
+        
+        .print-labels {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .buttons {
+                justify-content: center;
+            }
+            
+            .data-table {
+                font-size: 13px;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 10px 8px;
+            }
+            
+            .address-cell,
+            .owner-cell {
+                max-width: 140px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>DC Property Marketing Leads</h1>
+            <p>High-probability property listing targets based on financial distress indicators</p>
+        </div>
+        
+        <div class="controls">
+            <div class="controls-grid">
+                <div class="control-group">
+                    <label for="riskFilter">Risk Levels (Select Multiple)</label>
+                    <div class="multi-select" id="riskMultiSelect">
+                        <div class="multi-select-dropdown" onclick="toggleRiskDropdown()">
+                            <span id="riskSelectedText">All Risk Levels</span>
+                        </div>
+                        <div class="multi-select-options" id="riskOptions">
+                            <div class="multi-select-option">
+                                <input type="checkbox" id="risk_extremely_high" value="Extremely High">
+                                <label for="risk_extremely_high">🟢 Extremely High (80%+)</label>
+                            </div>
+                            <div class="multi-select-option">
+                                <input type="checkbox" id="risk_very_high" value="Very High">
+                                <label for="risk_very_high">🟡 Very High (60-80%)</label>
+                            </div>
+                            <div class="multi-select-option">
+                                <input type="checkbox" id="risk_high" value="High">
+                                <label for="risk_high">🟠 High (40-60%)</label>
+                            </div>
+                            <div class="multi-select-option">
+                                <input type="checkbox" id="risk_moderate" value="Moderate">
+                                <label for="risk_moderate">🔴 Moderate (20-40%)</label>
+                            </div>
+                            <div class="multi-select-option">
+                                <input type="checkbox" id="risk_low" value="Low">
+                                <label for="risk_low">⚫ Low (<20%)</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label for="wardFilter">Ward (PRMS_WARD)</label>
+                    <select id="wardFilter">
+                        <option value="">All Wards</option>
+                        <option value="1">Ward 1</option>
+                        <option value="2">Ward 2</option>
+                        <option value="3">Ward 3</option>
+                        <option value="4">Ward 4</option>
+                        <option value="5">Ward 5</option>
+                        <option value="6">Ward 6</option>
+                        <option value="7">Ward 7</option>
+                        <option value="8">Ward 8</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label for="propertyTypeFilter">Property Type (PROPTYPE)</label>
+                    <select id="propertyTypeFilter">
+                        <option value="">All Property Types</option>
+                        <!-- Will be populated from static data -->
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label>Assessment Range (ASSESSMENT)</label>
+                    <div class="range-inputs">
+                        <input type="number" id="minAssessment" placeholder="Min $" step="25000">
+                        <input type="number" id="maxAssessment" placeholder="Max $" step="25000">
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label for="ownerTypeFilter">Owner Type</label>
+                    <select id="ownerTypeFilter">
+                        <option value="">All Owners</option>
+                        <option value="individual">Individual Owners</option>
+                        <option value="corporate">Corporate/Trust</option>
+                        <option value="estate">Estate/Deceased</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label for="maxResults">Max Results</label>
+                    <select id="maxResults">
+                        <option value="50">50</option>
+                        <option value="100" selected>100</option>
+                        <option value="250">250</option>
+                        <option value="500">500</option>
+                        <option value="1000">1000</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="buttons">
+                <button class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+                <button class="btn btn-success" onclick="exportResults()">Export to CSV</button>
+                <button class="btn btn-success" onclick="printMailingLabels()">Print Mailing Labels</button>
+            </div>
+        </div>
+        
+        <div class="stats" id="statsContainer">
+            <div class="stat-card">
+                <div class="stat-value" id="totalProperties">0</div>
+                <div class="stat-label">Total Properties</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="highRiskCount">0</div>
+                <div class="stat-label">High Opportunity (60%+)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="avgProbability">0%</div>
+                <div class="stat-label">Avg Listing Probability</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="avgDebtRatio">0%</div>
+                <div class="stat-label">Avg Debt/Assessment Ratio</div>
+            </div>
+        </div>
+        
+        <div class="table-container">
+            <div id="noDataMessage" class="no-data">
+                <div class="no-data-icon">🏠</div>
+                <h3>Property Marketing Leads Ready</h3>
+                <p>Use the filters above to refine your target list</p>
+            </div>
+            <table class="data-table" id="resultsTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Property Address<br><small>(PREMISEADD)</small></th>
+                        <th>Owner Name<br><small>(OWNERNAME)</small></th>
+                        <th>Mailing Address<br><small>(ADDRESS1/2, CITYSTZIP)</small></th>
+                        <th>Listing Probability</th>
+                        <th>Risk Category</th>
+                        <th>Assessment Value<br><small>(ASSESSMENT)</small></th>
+                        <th>Total Balance Due<br><small>(TOTBALAMT)</small></th>
+                        <th>Ward<br><small>(PRMS_WARD)</small></th>
+                        <th>Property Type<br><small>(PROPTYPE)</small></th>
+                        <th>Years Since Sale<br><small>(SALEDATE)</small></th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Hidden print area for labels -->
+    <div class="print-labels" id="printLabels"></div>
+
+    <script>
+        // Static property data matching the model output structure
+        let propertyData = [
+            {
+                SSL: "0123 0001",
+                PREMISEADD: "1234 Connecticut Ave NW",
+                OWNERNAME: "Smith, John A",
+                ADDRESS1: "123 Main Street",
+                ADDRESS2: "",
+                CITYSTZIP: "Washington, DC 20001",
+                listing_probability: 0.92,
+                risk_category: "Extremely High",
+                ASSESSMENT: 750000,
+                TOTBALAMT: 85000,
+                PRMS_WARD: "1",
+                PROPTYPE: "Residential",
+                years_since_last_sale: 15.3,
+                debt_to_assessment_ratio: 0.113,
+                financial_distress_score: 6,
+                ownership_complexity_score: 1,
+                assessment_shock_score: 2,
+                corporate_owner: false,
+                trust_ownership: false,
+                estate_ownership: false
+            },
+            {
+                SSL: "0124 0002",
+                PREMISEADD: "5678 Georgia Ave NW",
+                OWNERNAME: "Johnson Family Trust",
+                ADDRESS1: "456 Oak Avenue",
+                ADDRESS2: "Apt 3B",
+                CITYSTZIP: "Washington, DC 20002",
+                listing_probability: 0.87,
+                risk_category: "Extremely High",
+                ASSESSMENT: 680000,
+                TOTBALAMT: 42000,
+                PRMS_WARD: "4",
+                PROPTYPE: "Condominium",
+                years_since_last_sale: 8.7,
+                debt_to_assessment_ratio: 0.062,
+                financial_distress_score: 5,
+                ownership_complexity_score: 3,
+                assessment_shock_score: 1,
+                corporate_owner: false,
+                trust_ownership: true,
+                estate_ownership: false
+            },
+            {
+                SSL: "0125 0003",
+                PREMISEADD: "910 H Street NE",
+                OWNERNAME: "Williams, Maria Estate",
+                ADDRESS1: "789 Pine Street",
+                ADDRESS2: "",
+                CITYSTZIP: "Washington, DC 20003",
+                listing_probability: 0.84,
+                risk_category: "Extremely High",
+                ASSESSMENT: 550000,
+                TOTBALAMT: 38000,
+                PRMS_WARD: "6",
+                PROPTYPE: "Residential",
+                years_since_last_sale: 22.1,
+                debt_to_assessment_ratio: 0.069,
+                financial_distress_score: 4,
+                ownership_complexity_score: 4,
+                assessment_shock_score: 3,
+                corporate_owner: false,
+                trust_ownership: false,
+                estate_ownership: true
+            },
+            {
+                SSL: "0126 0004",
+                PREMISEADD: "1122 Martin Luther King Jr Ave SE",
+                OWNERNAME: "Brown Properties LLC",
+                ADDRESS1: "321 Elm Drive",
+                ADDRESS2: "Suite 200",
+                CITYSTZIP: "Washington, DC 20020",
+                listing_probability: 0.79,
+                risk_category: "Very High",
+                ASSESSMENT: 420000,
+                TOTBALAMT: 28000,
+                PRMS_WARD: "8",
+                PROPTYPE: "Commercial",
+                years_since_last_sale: 3.2,
+                debt_to_assessment_ratio: 0.067,
+                financial_distress_score: 3,
+                ownership_complexity_score: 2,
+                assessment_shock_score: 2,
+                corporate_owner: true,
+                trust_ownership: false,
+                estate_ownership: false
+            },
+            {
+                SSL: "0127 0005",
+                PREMISEADD: "3344 Wisconsin Ave NW",
+                OWNERNAME: "Davis, Robert & Sarah",
+                ADDRESS1: "654 Maple Avenue",
+                ADDRESS2: "",
+                CITYSTZIP: "Washington, DC 20016",
+                listing_probability: 0.74,
+                risk_category: "Very High",
+                ASSESSMENT: 1200000,
+                TOTBALAMT: 65000,
+                PRMS_WARD: "3",
+                PROPTYPE: "Residential",
+                years_since_last_sale: 12.8,
+                debt_to_assessment_ratio: 0.054,
+                financial_distress_score: 4,
+                ownership_complexity_score: 1,
+                assessment_shock_score: 1,
+                corporate_owner: false,
+                trust_ownership: false,
+                estate_ownership: false
+            },
+            {
+                SSL: "0128 0006",
+                PREMISEADD: "5566 Rhode Island Ave NE",
+                OWNERNAME: "Miller Holdings Inc",
+                ADDRESS1: "987 Cedar Street",
+                ADDRESS2: "",
+                CITYSTZIP: "Washington, DC 20018",
+                listing_probability: 0.71,
+                risk_category: "Very High",
+                ASSESSMENT: 380000,
+                TOTBALAMT: 22000,
+                PRMS_WARD: "5",
+                PROPTYPE: "Mixed Use",
+                years_since_last_sale: 6.4,
+                debt_to_assessment_ratio: 0.058,
+                financial_distress_score: 3,
+                ownership_complexity_score: 2,
+                assessment_shock_score: 2,
+                corporate_owner: true,
+                trust_ownership: false,
+                estate_ownership: false
+            },
+            {
+                SSL: "0129 0007",
+                PREMISEADD: "7788 Pennsylvania Ave SE",
+                OWNERNAME: "Wilson, Jennifer Trust",
+                ADDRESS1: "147 Birch Lane",
+                ADDRESS2: "",
+                CITYSTZIP: "Washington, DC 20003",
+                listing_probability: 0.68,
+                risk_category: "Very High",
+                ASSESSMENT: 620000,
+                TOTBALAMT: 34000,
+                PRMS_WARD: "6",
+                PROPTYPE: "Condominium",
+                years_since_last_sale: 18.9,
+                debt_to_assessment_ratio: 0.055,
+                financial_distress_score: 3,
+                ownership_complexity_score: 3,
+                assessment_shock_score: 1,
+                corporate_owner: false,
+                trust_ownership: true,
+                estate_ownership: false
+            }
+        ];
+        
+        // Add more sample data to reach 50+ properties
+        const propertyTypes = ["Residential", "Condominium", "Commercial", "Mixed Use", "Cooperative", "Vacant Land"];
+        
+        for (let i = 8; i <= 50; i++) {
+            const addresses = [
+                "Connecticut Ave NW", "Georgia Ave NW", "Wisconsin Ave NW", "16th Street NW",
+                "H Street NE", "Rhode Island Ave NE", "Benning Rd NE", "Florida Ave NE",
+                "Pennsylvania Ave SE", "Alabama Ave SE", "Martin Luther King Jr Ave SE", "Good Hope Rd SE",
+                "Wisconsin Ave NW", "Massachusetts Ave NW", "K Street NW", "L Street NW"
+            ];
+            
+            const owners = [
+                "Anderson, Michael", "Thompson Family Trust", "Garcia Properties LLC", "Martinez, Carlos",
+                "Robinson Estate", "Clark Holdings", "Rodriguez, Maria", "Lewis Trust",
+                "Lee Properties", "Walker, James", "Hall Holdings LLC", "Allen Estate",
+                "Young Trust", "Hernandez, Patricia", "King Properties", "Wright Holdings"
+            ];
+            
+            const wards = ["1", "2", "3", "4", "5", "6", "7", "8"];
+            
+            const probability = Math.max(0.15, Math.random() * 0.85);
+            const riskCategory = probability >= 0.8 ? "Extremely High" :
+                               probability >= 0.6 ? "Very High" :
+                               probability >= 0.4 ? "High" :
+                               probability >= 0.2 ? "Moderate" : "Low";
+            
+            const owner = owners[i % owners.length];
+            const corporate = /LLC|INC|CORP|PROPERTIES|HOLDINGS/.test(owner);
+            const trust = /TRUST/.test(owner);
+            const estate = /ESTATE/.test(owner);
+            
+            const assessment = Math.floor(Math.random() * 1000000) + 250000;
+            const debtRatio = Math.random() * 0.15;
+            const totalBalance = Math.floor(assessment * debtRatio);
+            
+            propertyData.push({
+                SSL: `0${100 + i} 000${i}`,
+                PREMISEADD: `${1000 + i * 100} ${addresses[i % addresses.length]}`,
+                OWNERNAME: owner,
+                ADDRESS1: `${100 + i} Sample Street`,
+                ADDRESS2: i % 3 === 0 ? `Apt ${i}` : "",
+                CITYSTZIP: `Washington, DC 200${10 + (i % 20)}`,
+                listing_probability: probability,
+                risk_category: riskCategory,
+                ASSESSMENT: assessment,
+                TOTBALAMT: totalBalance,
+                PRMS_WARD: wards[i % wards.length],
+                PROPTYPE: propertyTypes[i % propertyTypes.length],
+                years_since_last_sale: Math.random() * 30,
+                debt_to_assessment_ratio: debtRatio,
+                financial_distress_score: Math.floor(Math.random() * 8),
+                ownership_complexity_score: Math.floor(Math.random() * 5),
+                assessment_shock_score: Math.floor(Math.random() * 4),
+                corporate_owner: corporate,
+                trust_ownership: trust,
+                estate_ownership: estate
+            });
+        }
+        
+        // Sort by listing probability (highest first)
+        propertyData.sort((a, b) => b.listing_probability - a.listing_probability);
+        
+        let filteredData = [...propertyData];
+        let selectedRiskLevels = [];
+        
+        // Multi-select functionality
+        function toggleRiskDropdown() {
+            const dropdown = document.getElementById('riskOptions');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const multiSelect = document.getElementById('riskMultiSelect');
+            if (!multiSelect.contains(event.target)) {
+                document.getElementById('riskOptions').style.display = 'none';
+            }
+        });
+        
+        // Handle risk level selection
+        document.querySelectorAll('#riskOptions input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                updateSelectedRiskLevels();
+                applyFilters();
+            });
+        });
+        
+        function updateSelectedRiskLevels() {
+            selectedRiskLevels = Array.from(document.querySelectorAll('#riskOptions input[type="checkbox"]:checked'))
+                .map(cb => cb.value);
+            
+            const text = selectedRiskLevels.length === 0 ? 'All Risk Levels' :
+                        selectedRiskLevels.length === 5 ? 'All Risk Levels' :
+                        selectedRiskLevels.join(', ');
+            document.getElementById('riskSelectedText').textContent = text;
+        }
+        
+        // Filter event listeners
+        document.getElementById('wardFilter').addEventListener('change', applyFilters);
+        document.getElementById('propertyTypeFilter').addEventListener('change', applyFilters);
+        document.getElementById('ownerTypeFilter').addEventListener('change', applyFilters);
+        document.getElementById('maxResults').addEventListener('change', applyFilters);
+        document.getElementById('minAssessment').addEventListener('input', debounce(applyFilters, 500));
+        document.getElementById('maxAssessment').addEventListener('input', debounce(applyFilters, 500));
+        
+        // Debounce function for input fields
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        function populatePropertyTypes() {
+            const propertyTypes = [...new Set(propertyData.map(p => p.PROPTYPE))].sort();
+            const select = document.getElementById('propertyTypeFilter');
+            select.innerHTML = '<option value="">All Property Types</option>';
+            propertyTypes.forEach(type => {
+                const option = document.createElement('option');
+                option.value = type;
+                option.textContent = type;
+                select.appendChild(option);
+            });
+        }
+        
+        function applyFilters() {
+            const wardFilter = document.getElementById('wardFilter').value;
+            const propertyTypeFilter = document.getElementById('propertyTypeFilter').value;
+            const ownerTypeFilter = document.getElementById('ownerTypeFilter').value;
+            const minAssessment = parseFloat(document.getElementById('minAssessment').value) || 0;
+            const maxAssessment = parseFloat(document.getElementById('maxAssessment').value) || Infinity;
+            const maxResults = parseInt(document.getElementById('maxResults').value);
+            
+            filteredData = propertyData.filter(property => {
+                const ward = property.PRMS_WARD || '';
+                const propertyType = property.PROPTYPE || '';
+                const assessment = parseFloat(property.ASSESSMENT) || 0;
+                const riskCategory = property.risk_category || '';
+                
+                // Risk level filter
+                const passesRiskFilter = selectedRiskLevels.length === 0 || selectedRiskLevels.includes(riskCategory);
+                
+                // Owner type filter
+                let passesOwnerFilter = true;
+                if (ownerTypeFilter === 'individual') {
+                    passesOwnerFilter = !property.corporate_owner && !property.trust_ownership && !property.estate_ownership;
+                } else if (ownerTypeFilter === 'corporate') {
+                    passesOwnerFilter = property.corporate_owner || property.trust_ownership;
+                } else if (ownerTypeFilter === 'estate') {
+                    passesOwnerFilter = property.estate_ownership;
+                }
+                
+                return passesRiskFilter &&
+                       (!wardFilter || ward === wardFilter) &&
+                       (!propertyTypeFilter || propertyType === propertyTypeFilter) &&
+                       (assessment >= minAssessment && assessment <= maxAssessment) &&
+                       passesOwnerFilter;
+            });
+            
+            filteredData = filteredData.slice(0, maxResults);
+            updateDisplay();
+        }
+        
+        function updateDisplay() {
+            updateStats();
+            updateTable();
+        }
+        
+        function updateStats() {
+            const totalProperties = filteredData.length;
+            const highRiskCount = filteredData.filter(p => parseFloat(p.listing_probability) >= 0.6).length;
+            const avgProbability = totalProperties > 0 ? 
+                (filteredData.reduce((sum, p) => sum + parseFloat(p.listing_probability), 0) / totalProperties * 100).toFixed(1) : 0;
+            const avgDebtRatio = totalProperties > 0 ?
+                (filteredData.reduce((sum, p) => sum + parseFloat(p.debt_to_assessment_ratio), 0) / totalProperties * 100).toFixed(1) : 0;
+            
+            document.getElementById('totalProperties').textContent = totalProperties.toLocaleString();
+            document.getElementById('highRiskCount').textContent = highRiskCount.toLocaleString();
+            document.getElementById('avgProbability').textContent = avgProbability + '%';
+            document.getElementById('avgDebtRatio').textContent = avgDebtRatio + '%';
+        }
+        
+        function updateTable() {
+            const tableBody = document.getElementById('tableBody');
+            const resultsTable = document.getElementById('resultsTable');
+            const noDataMessage = document.getElementById('noDataMessage');
+            
+            if (filteredData.length === 0) {
+                resultsTable.style.display = 'none';
+                noDataMessage.style.display = 'block';
+                return;
+            }
+            
+            resultsTable.style.display = 'table';
+            noDataMessage.style.display = 'none';
+            
+            tableBody.innerHTML = filteredData.map(property => {
+                const probability = parseFloat(property.listing_probability) || 0;
+                const assessment = parseFloat(property.ASSESSMENT) || 0;
+                const totalBalance = parseFloat(property.TOTBALAMT) || 0;
+                const yearsSale = parseFloat(property.years_since_last_sale) || 0;
+                
+                // Format mailing address
+                const mailingAddress = [
+                    property.ADDRESS1,
+                    property.ADDRESS2,
+                    property.CITYSTZIP
+                ].filter(part => part && part.trim()).join(', ');
+                
+                return `
+                    <tr>
+                        <td class="address-cell" title="${property.PREMISEADD || 'N/A'}">${property.PREMISEADD || 'N/A'}</td>
+                        <td class="owner-cell" title="${property.OWNERNAME || 'N/A'}">${property.OWNERNAME || 'N/A'}</td>
+                        <td class="address-cell" title="${mailingAddress}">${mailingAddress || 'N/A'}</td>
+                        <td>
+                            <div class="probability-container">
+                                <div class="probability-bar">
+                                    <div class="probability-fill" style="width: ${probability * 100}%; background: ${getProbabilityColor(probability)}"></div>
+                                </div>
+                                <div class="probability-text">${(probability * 100).toFixed(1)}%</div>
+                            </div>
+                        </td>
+                        <td><span class="risk-badge risk-${(property.risk_category || 'low').toLowerCase().replace(' ', '-')}">${property.risk_category || 'Low'}</span></td>
+                        <td class="currency">${assessment.toLocaleString()}</td>
+                        <td class="currency">${totalBalance.toLocaleString()}</td>
+                        <td>Ward ${property.PRMS_WARD || 'N/A'}</td>
+                        <td>${property.PROPTYPE || 'N/A'}</td>
+                        <td>${yearsSale.toFixed(1)} yrs</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        function getProbabilityColor(probability) {
+            if (probability >= 0.8) return 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            if (probability >= 0.6) return 'linear-gradient(135deg, #34d399 0%, #10b981 100%)';
+            if (probability >= 0.4) return 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)';
+            if (probability >= 0.2) return 'linear-gradient(135deg, #fb7185 0%, #f43f5e 100%)';
+            return 'linear-gradient(135deg, #94a3b8 0%, #64748b 100%)';
+        }
+        
+        function exportResults() {
+            if (filteredData.length === 0) {
+                alert('No data to export');
+                return;
+            }
+            
+            const headers = [
+                'SSL', 'Property Address (PREMISEADD)', 'Owner Name (OWNERNAME)', 
+                'Mailing Address Line 1 (ADDRESS1)', 'Mailing Address Line 2 (ADDRESS2)', 
+                'City State Zip (CITYSTZIP)', 'Listing Probability', 'Risk Category', 
+                'Assessment (ASSESSMENT)', 'Total Balance Due (TOTBALAMT)', 'Ward (PRMS_WARD)', 
+                'Property Type (PROPTYPE)', 'Years Since Sale', 'Debt to Assessment Ratio',
+                'Financial Distress Score', 'Ownership Complexity Score'
+            ];
+            
+            const csvContent = [
+                headers.join(','),
+                ...filteredData.map(property => [
+                    `"${property.SSL || ''}"`,
+                    `"${property.PREMISEADD || ''}"`,
+                    `"${property.OWNERNAME || ''}"`,
+                    `"${property.ADDRESS1 || ''}"`,
+                    `"${property.ADDRESS2 || ''}"`,
+                    `"${property.CITYSTZIP || ''}"`,
+                    `${(parseFloat(property.listing_probability) * 100).toFixed(1)}%`,
+                    `"${property.risk_category || ''}"`,
+                    parseFloat(property.ASSESSMENT) || 0,
+                    parseFloat(property.TOTBALAMT) || 0,
+                    property.PRMS_WARD || '',
+                    `"${property.PROPTYPE || ''}"`,
+                    parseFloat(property.years_since_last_sale).toFixed(1) || 0,
+                    `${(parseFloat(property.debt_to_assessment_ratio) * 100).toFixed(2)}%`,
+                    property.financial_distress_score || 0,
+                    property.ownership_complexity_score || 0
+                ].join(','))
+            ].join('\n');
+            
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `dc_marketing_leads_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+        
+        function printMailingLabels() {
+            if (filteredData.length === 0) {
+                alert('No data to print');
+                return;
+            }
+            
+            const printLabels = document.getElementById('printLabels');
+            printLabels.innerHTML = '';
+            
+            // Group labels into pages of 30 (3 columns x 10 rows for Avery 5160)
+            const labelsPerPage = 30;
+            const pages = Math.ceil(filteredData.length / labelsPerPage);
+            
+            for (let page = 0; page < pages; page++) {
+                const startIndex = page * labelsPerPage;
+                const endIndex = Math.min(startIndex + labelsPerPage, filteredData.length);
+                const pageData = filteredData.slice(startIndex, endIndex);
+                
+                const labelPage = document.createElement('div');
+                labelPage.className = 'label-page';
+                
+                const labelGrid = document.createElement('div');
+                labelGrid.className = 'label-grid';
+                
+                // Fill the grid with labels
+                for (let i = 0; i < labelsPerPage; i++) {
+                    const label = document.createElement('div');
+                    label.className = 'label';
+                    
+                    if (i < pageData.length) {
+                        const property = pageData[i];
+                        const mailingAddress = [
+                            property.ADDRESS1,
+                            property.ADDRESS2,
+                            property.CITYSTZIP
+                        ].filter(part => part && part.trim()).join('\n');
+                        
+                        label.innerHTML = `
+                            <div class="label-name">${property.OWNERNAME || ''}</div>
+                            <div class="label-address">${mailingAddress || ''}</div>
+                        `;
+                    }
+                    
+                    labelGrid.appendChild(label);
+                }
+                
+                labelPage.appendChild(labelGrid);
+                printLabels.appendChild(labelPage);
+            }
+            
+            printLabels.style.display = 'block';
+            window.print();
+            printLabels.style.display = 'none';
+        }
+        
+        // Unit Test Functions
+        function runUnitTests() {
+            console.log('Running unit tests...');
+            
+            // Test 1: Property Type Filter Population
+            console.log('Test 1: Property Type Filter Population');
+            populatePropertyTypes();
+            const propertyTypeSelect = document.getElementById('propertyTypeFilter');
+            const options = Array.from(propertyTypeSelect.options).map(option => option.value).filter(value => value !== '');
+            const expectedTypes = [...new Set(propertyData.map(p => p.PROPTYPE))].sort();
+            console.log('Expected types:', expectedTypes);
+            console.log('Actual options:', options.sort());
+            console.log('Test 1 passed:', JSON.stringify(options.sort()) === JSON.stringify(expectedTypes));
+            
+            // Test 2: Property Type Filter Functionality
+            console.log('\nTest 2: Property Type Filter Functionality');
+            document.getElementById('propertyTypeFilter').value = 'Commercial';
+            applyFilters();
+            const commercialProperties = filteredData.filter(p => p.PROPTYPE === 'Commercial');
+            const allCommercialInData = propertyData.filter(p => p.PROPTYPE === 'Commercial');
+            console.log('Filtered commercial properties:', commercialProperties.length);
+            console.log('Expected commercial properties:', allCommercialInData.length);
+            console.log('Test 2 passed:', commercialProperties.length === allCommercialInData.length);
+            
+            // Test 3: Remove Print Table Button
+            console.log('\nTest 3: Print Table Button Removal');
+            const printTableButton = document.querySelector('button[onclick="printTable()"]');
+            console.log('Print table button exists:', printTableButton !== null);
+            console.log('Test 3 passed (button should not exist):', printTableButton === null);
+            
+            // Test 4: Property Type Column in Table
+            console.log('\nTest 4: Property Type Column in Table');
+            document.getElementById('propertyTypeFilter').value = '';
+            applyFilters();
+            const tableHeaders = Array.from(document.querySelectorAll('#resultsTable th')).map(th => th.textContent);
+            const hasPropertyTypeColumn = tableHeaders.some(header => header.includes('Property Type'));
+            console.log('Table headers:', tableHeaders);
+            console.log('Has Property Type column:', hasPropertyTypeColumn);
+            console.log('Test 4 passed:', hasPropertyTypeColumn);
+            
+            // Test 5: CSV Export includes Property Type
+            console.log('\nTest 5: CSV Export includes Property Type');
+            const csvHeaders = [
+                'SSL', 'Property Address (PREMISEADD)', 'Owner Name (OWNERNAME)', 
+                'Mailing Address Line 1 (ADDRESS1)', 'Mailing Address Line 2 (ADDRESS2)', 
+                'City State Zip (CITYSTZIP)', 'Listing Probability', 'Risk Category', 
+                'Assessment (ASSESSMENT)', 'Total Balance Due (TOTBALAMT)', 'Ward (PRMS_WARD)', 
+                'Property Type (PROPTYPE)', 'Years Since Sale', 'Debt to Assessment Ratio',
+                'Financial Distress Score', 'Ownership Complexity Score'
+            ];
+            const hasPropertyTypeInCSV = csvHeaders.includes('Property Type (PROPTYPE)');
+            console.log('CSV headers include Property Type:', hasPropertyTypeInCSV);
+            console.log('Test 5 passed:', hasPropertyTypeInCSV);
+            
+            console.log('\n=== Unit Test Summary ===');
+            console.log('All tests completed. Check individual test results above.');
+        }
+        
+        // Initialize the application
+        function initializeApp() {
+            populatePropertyTypes();
+            applyFilters(); // Load initial data
+        }
+        
+        // Run tests on page load (remove this in production)
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            
+            // Uncomment the line below to run unit tests on page load
+            // runUnitTests();
+        });
+        
+    </script>
+</body>
+</html>
