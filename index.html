@@ -117,8 +117,8 @@
         
         .controls-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
             margin-bottom: 25px;
         }
         
@@ -126,6 +126,7 @@
             display: flex;
             flex-direction: column;
             position: relative;
+            min-width: 0; /* Allow shrinking */
         }
         
         .control-group label {
@@ -143,6 +144,8 @@
             font-size: 15px;
             transition: all 0.3s ease;
             background: white;
+            width: 100%;
+            min-width: 0;
         }
         
         .control-group select:focus,
@@ -165,6 +168,10 @@
             cursor: pointer;
             user-select: none;
             transition: all 0.3s ease;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         
         .multi-select-dropdown:hover {
@@ -205,10 +212,16 @@
             transform: scale(1.1);
         }
         
+        /* Input styling */
         .range-inputs {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
+        }
+        
+        .range-inputs input {
+            width: 100%;
+            min-width: 0;
         }
         
         .buttons {
@@ -386,6 +399,7 @@
             min-width: 90px;
         }
         
+        /* Fixed risk level colors to match table */
         .risk-extremely-high {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
@@ -592,6 +606,11 @@
                 padding: 10px;
             }
             
+            .container {
+                border-radius: 12px;
+                overflow-x: hidden; /* Prevent horizontal overflow */
+            }
+            
             .header {
                 padding: 25px 20px;
             }
@@ -613,7 +632,7 @@
             }
             
             .controls {
-                padding: 20px;
+                padding: 20px 15px; /* Reduced padding */
             }
             
             .controls-grid {
@@ -621,14 +640,27 @@
                 gap: 20px;
             }
             
+            .control-group {
+                width: 100%;
+                overflow: hidden; /* Prevent overflow */
+            }
+            
+            .multi-select-dropdown {
+                font-size: 14px;
+                padding: 12px 14px;
+            }
+            
             .buttons {
                 justify-content: center;
                 flex-direction: column;
                 align-items: stretch;
+                gap: 12px;
             }
             
             .btn {
-                margin-bottom: 10px;
+                margin: 0;
+                width: 100%;
+                text-align: center;
             }
             
             .button-separator {
@@ -636,7 +668,7 @@
             }
             
             .stats {
-                padding: 20px;
+                padding: 20px 15px;
                 grid-template-columns: repeat(2, 1fr);
                 gap: 15px;
             }
@@ -650,7 +682,7 @@
             }
             
             .table-container {
-                padding: 20px;
+                padding: 20px 15px;
                 max-height: 600px;
             }
             
@@ -661,6 +693,7 @@
             
             .search-input {
                 min-width: auto;
+                width: 100%;
             }
             
             .data-table {
@@ -689,8 +722,17 @@
                 font-size: 1.8em;
             }
             
+            .controls {
+                padding: 15px 10px;
+            }
+            
             .stats {
                 grid-template-columns: 1fr;
+                padding: 15px 10px;
+            }
+            
+            .table-container {
+                padding: 15px 10px;
             }
             
             .data-table th,
@@ -822,8 +864,8 @@
                 <div class="stat-label">Avg Listing Probability</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" id="avgDebtRatio">0%</div>
-                <div class="stat-label">Avg Debt/Assessment Ratio</div>
+                <div class="stat-value" id="commonWard">N/A</div>
+                <div class="stat-label">Most Common Ward</div>
             </div>
         </div>
         
@@ -926,6 +968,56 @@
             }
         }
 
+        // Initialize sliders
+        function initializeSliders() {
+            const minSlider = document.getElementById('minAssessmentSlider');
+            const maxSlider = document.getElementById('maxAssessmentSlider');
+            const minInput = document.getElementById('minAssessment');
+            const maxInput = document.getElementById('maxAssessment');
+            const minValue = document.getElementById('minSliderValue');
+            const maxValue = document.getElementById('maxSliderValue');
+
+            // Update slider values
+            function updateSliderValue(slider, display, input) {
+                const value = parseInt(slider.value);
+                display.textContent = value >= 1000000 ? `${(value/1000000).toFixed(1)}M` : `${(value/1000).toFixed(0)}K`;
+                input.value = value;
+            }
+
+            // Update input values
+            function updateInputValue(input, slider, display) {
+                const value = parseInt(input.value) || 0;
+                slider.value = Math.min(Math.max(value, 0), 5000000);
+                updateSliderValue(slider, display, input);
+            }
+
+            // Event listeners for sliders
+            minSlider.addEventListener('input', () => {
+                updateSliderValue(minSlider, minValue, minInput);
+                applyFilters();
+            });
+
+            maxSlider.addEventListener('input', () => {
+                updateSliderValue(maxSlider, maxValue, maxInput);
+                applyFilters();
+            });
+
+            // Event listeners for inputs
+            minInput.addEventListener('input', debounce(() => {
+                updateInputValue(minInput, minSlider, minValue);
+                applyFilters();
+            }, 500));
+
+            maxInput.addEventListener('input', debounce(() => {
+                updateInputValue(maxInput, maxSlider, maxValue);
+                applyFilters();
+            }, 500));
+
+            // Initialize display values
+            updateSliderValue(minSlider, minValue, minInput);
+            updateSliderValue(maxSlider, maxValue, maxInput);
+        }
+
         // Show/hide info modal
         function showInfoModal() {
             document.getElementById('infoModal').style.display = 'block';
@@ -1004,8 +1096,6 @@
         document.getElementById('propertyTypeFilter').addEventListener('change', applyFilters);
         document.getElementById('ownerTypeFilter').addEventListener('change', applyFilters);
         document.getElementById('maxResults').addEventListener('change', applyFilters);
-        document.getElementById('minAssessment').addEventListener('input', debounce(applyFilters, 500));
-        document.getElementById('maxAssessment').addEventListener('input', debounce(applyFilters, 500));
         
         // Debounce function for input fields
         function debounce(func, wait) {
@@ -1170,13 +1260,23 @@
             const highRiskCount = filteredData.filter(p => parseFloat(p.listing_probability) >= 0.6).length;
             const avgProbability = totalProperties > 0 ? 
                 (filteredData.reduce((sum, p) => sum + parseFloat(p.listing_probability), 0) / totalProperties * 100).toFixed(1) : 0;
-            const avgDebtRatio = totalProperties > 0 ?
-                (filteredData.reduce((sum, p) => sum + parseFloat(p.debt_to_assessment_ratio), 0) / totalProperties * 100).toFixed(1) : 0;
+            
+            // Calculate most common ward
+            const wardCounts = {};
+            filteredData.forEach(p => {
+                const ward = p.PRMS_WARD;
+                if (ward) {
+                    wardCounts[ward] = (wardCounts[ward] || 0) + 1;
+                }
+            });
+            
+            const commonWard = Object.keys(wardCounts).length > 0 ? 
+                Object.keys(wardCounts).reduce((a, b) => wardCounts[a] > wardCounts[b] ? a : b) : 'N/A';
             
             document.getElementById('totalProperties').textContent = totalProperties.toLocaleString();
             document.getElementById('highRiskCount').textContent = highRiskCount.toLocaleString();
             document.getElementById('avgProbability').textContent = avgProbability + '%';
-            document.getElementById('avgDebtRatio').textContent = avgDebtRatio + '%';
+            document.getElementById('commonWard').textContent = commonWard === 'N/A' ? 'N/A' : `Ward ${commonWard}`;
         }
         
         function updateTable() {
