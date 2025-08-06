@@ -211,6 +211,10 @@
             gap: 12px;
         }
         
+        .range-inputs input {
+            min-width: 0; /* Prevents input from overflowing */
+        }
+        
         .buttons {
             display: flex;
             gap: 18px;
@@ -443,36 +447,16 @@
             color: #2d3748;
         }
         
-        .truncated-cell {
+        .address-cell {
+            max-width: 250px;
+            word-wrap: break-word;
+            white-space: normal;
+        }
+        
+        .owner-cell {
             max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            position: relative;
-            cursor: pointer;
-        }
-        
-        .custom-tooltip {
-            visibility: hidden;
-            background: #2d3748;
-            color: white;
-            text-align: left;
-            border-radius: 8px;
-            padding: 10px 15px;
-            position: fixed;
-            z-index: 10000;
-            opacity: 0;
-            transition: opacity 0.3s, visibility 0.3s;
-            font-size: 13px;
-            white-space: nowrap;
-            max-width: 400px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            pointer-events: none;
-        }
-        
-        .custom-tooltip.show {
-            visibility: visible;
-            opacity: 1;
+            word-wrap: break-word;
+            white-space: normal;
         }
         
         .no-data {
@@ -599,12 +583,16 @@
             }
             
             .controls {
-                padding: 20px;
+                padding: 20px 15px;
             }
             
             .controls-grid {
                 grid-template-columns: 1fr;
                 gap: 20px;
+            }
+            
+            .range-inputs {
+                gap: 10px;
             }
             
             .buttons {
@@ -659,7 +647,8 @@
                 padding: 10px 8px;
             }
             
-            .truncated-cell {
+            .address-cell,
+            .owner-cell {
                 max-width: 120px;
             }
             
@@ -684,7 +673,8 @@
                 padding: 8px 6px;
             }
             
-            .truncated-cell {
+            .address-cell,
+            .owner-cell {
                 max-width: 100px;
             }
         }
@@ -882,34 +872,6 @@
         let filteredData = [];
         let selectedRiskLevels = [];
         let currentSort = { column: -1, direction: 'asc' };
-        let tooltip = null;
-
-        // Tooltip functionality
-        function createTooltip() {
-            if (!tooltip) {
-                tooltip = document.createElement('div');
-                tooltip.className = 'custom-tooltip';
-                document.body.appendChild(tooltip);
-            }
-        }
-
-        function showTooltip(event, element) {
-            createTooltip();
-            const text = element.getAttribute('data-tooltip');
-            tooltip.textContent = text;
-            tooltip.classList.add('show');
-            
-            // Position tooltip near mouse cursor
-            const rect = element.getBoundingClientRect();
-            tooltip.style.left = (event.pageX + 10) + 'px';
-            tooltip.style.top = (event.pageY - 40) + 'px';
-        }
-
-        function hideTooltip() {
-            if (tooltip) {
-                tooltip.classList.remove('show');
-            }
-        }
 
         // Load property data from JSON file
         async function loadPropertyData() {
