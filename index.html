@@ -117,8 +117,8 @@
         
         .controls-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
             margin-bottom: 25px;
         }
         
@@ -154,7 +154,7 @@
         
         .multi-select {
             position: relative;
-            z-index: 1000;
+            z-index: 100;
         }
         
         .multi-select-dropdown {
@@ -180,7 +180,7 @@
             border: 2px solid #667eea;
             border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            z-index: 1001;
+            z-index: 101;
             display: none;
             max-height: 220px;
             overflow-y: auto;
@@ -459,8 +459,8 @@
             border-radius: 8px;
             padding: 10px 15px;
             position: absolute;
-            z-index: 1000;
-            bottom: 125%;
+            z-index: 10000;
+            bottom: 100%;
             left: 50%;
             transform: translateX(-50%);
             opacity: 0;
@@ -469,6 +469,8 @@
             white-space: normal;
             max-width: 300px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin-bottom: 5px;
+            pointer-events: none;
         }
         
         .tooltip::after {
@@ -799,7 +801,7 @@
             </div>
             
             <div class="buttons">
-                <button class="btn btn-primary" onclick="applyFilters()">Search</button>
+                <button class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
                 <div class="button-separator"></div>
                 <button class="btn btn-success" onclick="exportResults()">Export to CSV</button>
                 <button class="btn btn-success" onclick="printMailingLabels()">Print Mailing Labels</button>
