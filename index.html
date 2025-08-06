@@ -211,10 +211,6 @@
             gap: 12px;
         }
         
-        .range-inputs input {
-            min-width: 0; /* Prevents input from overflowing */
-        }
-        
         .buttons {
             display: flex;
             gap: 18px;
@@ -447,16 +443,50 @@
             color: #2d3748;
         }
         
-        .address-cell {
-            max-width: 250px;
-            word-wrap: break-word;
-            white-space: normal;
+        .truncated-cell {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            position: relative;
         }
         
-        .owner-cell {
-            max-width: 200px;
-            word-wrap: break-word;
+        .tooltip {
+            visibility: hidden;
+            background: #2d3748;
+            color: white;
+            text-align: left;
+            border-radius: 8px;
+            padding: 10px 15px;
+            position: absolute;
+            z-index: 10000;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+            font-size: 13px;
             white-space: normal;
+            max-width: 300px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin-bottom: 5px;
+            pointer-events: none;
+        }
+        
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #2d3748 transparent transparent transparent;
+        }
+        
+        .truncated-cell:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
         }
         
         .no-data {
@@ -583,16 +613,12 @@
             }
             
             .controls {
-                padding: 20px 15px;
+                padding: 20px;
             }
             
             .controls-grid {
                 grid-template-columns: 1fr;
                 gap: 20px;
-            }
-            
-            .range-inputs {
-                gap: 10px;
             }
             
             .buttons {
@@ -647,8 +673,7 @@
                 padding: 10px 8px;
             }
             
-            .address-cell,
-            .owner-cell {
+            .truncated-cell {
                 max-width: 120px;
             }
             
@@ -673,8 +698,7 @@
                 padding: 8px 6px;
             }
             
-            .address-cell,
-            .owner-cell {
+            .truncated-cell {
                 max-width: 100px;
             }
         }
