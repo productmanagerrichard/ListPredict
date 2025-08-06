@@ -32,6 +32,7 @@
             color: white;
             padding: 40px;
             text-align: center;
+            position: relative;
         }
         
         .header h1 {
@@ -45,6 +46,67 @@
             opacity: 0.9;
             font-size: 1.2em;
             font-weight: 300;
+            margin-bottom: 20px;
+        }
+        
+        .info-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .info-icon:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: #333;
         }
         
         .controls {
@@ -63,6 +125,7 @@
         .control-group {
             display: flex;
             flex-direction: column;
+            position: relative;
         }
         
         .control-group label {
@@ -91,6 +154,7 @@
         
         .multi-select {
             position: relative;
+            z-index: 1000;
         }
         
         .multi-select-dropdown {
@@ -116,7 +180,7 @@
             border: 2px solid #667eea;
             border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            z-index: 1000;
+            z-index: 1001;
             display: none;
             max-height: 220px;
             overflow-y: auto;
@@ -151,6 +215,7 @@
             display: flex;
             gap: 18px;
             flex-wrap: wrap;
+            align-items: center;
         }
         
         .btn {
@@ -182,6 +247,13 @@
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .button-separator {
+            width: 2px;
+            height: 40px;
+            background: #e2e8f0;
+            border-radius: 1px;
         }
         
         .stats {
@@ -216,7 +288,29 @@
         .table-container {
             padding: 35px;
             max-height: 700px;
-            overflow-y: auto;
+            overflow: auto;
+        }
+        
+        .table-controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
         }
         
         .data-table {
@@ -239,12 +333,35 @@
             top: 0;
             z-index: 10;
             letter-spacing: 0.5px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s ease;
+        }
+        
+        .data-table th:hover {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+        }
+        
+        .data-table th.sortable::after {
+            content: ' ↕️';
+            opacity: 0.6;
+        }
+        
+        .data-table th.sort-asc::after {
+            content: ' ↑';
+            opacity: 1;
+        }
+        
+        .data-table th.sort-desc::after {
+            content: ' ↓';
+            opacity: 1;
         }
         
         .data-table td {
             padding: 16px 14px;
             border-bottom: 1px solid #f1f5f9;
             font-size: 0.9em;
+            position: relative;
         }
         
         .data-table tbody tr:hover {
@@ -326,18 +443,48 @@
             color: #2d3748;
         }
         
-        .address-cell {
+        .truncated-cell {
             max-width: 200px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            position: relative;
         }
         
-        .owner-cell {
-            max-width: 180px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+        .tooltip {
+            visibility: hidden;
+            background: #2d3748;
+            color: white;
+            text-align: left;
+            border-radius: 8px;
+            padding: 10px 15px;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+            font-size: 13px;
+            white-space: normal;
+            max-width: 300px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #2d3748 transparent transparent transparent;
+        }
+        
+        .truncated-cell:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
         }
         
         .no-data {
@@ -437,17 +584,86 @@
             display: none;
         }
         
+        /* Mobile Responsive Styles */
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 25px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2.2em;
+            }
+            
+            .header p {
+                font-size: 1em;
+            }
+            
+            .info-icon {
+                top: 15px;
+                right: 15px;
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+            
+            .controls {
+                padding: 20px;
+            }
+            
             .controls-grid {
                 grid-template-columns: 1fr;
+                gap: 20px;
             }
             
             .buttons {
                 justify-content: center;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .btn {
+                margin-bottom: 10px;
+            }
+            
+            .button-separator {
+                display: none;
+            }
+            
+            .stats {
+                padding: 20px;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .stat-card {
+                padding: 15px;
+            }
+            
+            .stat-value {
+                font-size: 1.8em;
+            }
+            
+            .table-container {
+                padding: 20px;
+                max-height: 600px;
+            }
+            
+            .table-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-input {
+                min-width: auto;
             }
             
             .data-table {
-                font-size: 13px;
+                font-size: 12px;
+                min-width: 600px;
             }
             
             .data-table th,
@@ -455,9 +671,33 @@
                 padding: 10px 8px;
             }
             
-            .address-cell,
-            .owner-cell {
-                max-width: 140px;
+            .truncated-cell {
+                max-width: 120px;
+            }
+            
+            .modal-content {
+                margin: 10% auto;
+                padding: 25px;
+                width: 95%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 8px 6px;
+            }
+            
+            .truncated-cell {
+                max-width: 100px;
             }
         }
     </style>
@@ -465,8 +705,11 @@
 <body>
     <div class="container">
         <div class="header">
+            <div class="info-icon" onclick="showInfoModal()" title="Learn about this model">
+                ?
+            </div>
             <h1>DC Property Marketing Leads</h1>
-            <p>High-probability property listing targets based on financial distress indicators</p>
+            <p>High-probability property listing targets</p>
         </div>
         
         <div class="controls">
@@ -556,7 +799,8 @@
             </div>
             
             <div class="buttons">
-                <button class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+                <button class="btn btn-primary" onclick="applyFilters()">Search</button>
+                <div class="button-separator"></div>
                 <button class="btn btn-success" onclick="exportResults()">Export to CSV</button>
                 <button class="btn btn-success" onclick="printMailingLabels()">Print Mailing Labels</button>
             </div>
@@ -582,24 +826,27 @@
         </div>
         
         <div class="table-container">
+            <div class="table-controls" id="tableControls" style="display: none;">
+                <input type="text" class="search-input" id="tableSearch" placeholder="Search table data..." onkeyup="searchTable()">
+            </div>
+            
             <div id="noDataMessage" class="no-data">
                 <div class="no-data-icon">🏠</div>
                 <h3>Property Marketing Leads Ready</h3>
                 <p>Use the filters above to refine your target list</p>
             </div>
+            
             <table class="data-table" id="resultsTable" style="display: none;">
                 <thead>
                     <tr>
-                        <th>Property Address<br><small>(PREMISEADD)</small></th>
-                        <th>Owner Name<br><small>(OWNERNAME)</small></th>
-                        <th>Mailing Address<br><small>(ADDRESS1/2, CITYSTZIP)</small></th>
-                        <th>Listing Probability</th>
-                        <th>Risk Category</th>
-                        <th>Assessment Value<br><small>(ASSESSMENT)</small></th>
-                        <th>Total Balance Due<br><small>(TOTBALAMT)</small></th>
-                        <th>Ward<br><small>(PRMS_WARD)</small></th>
-                        <th>Property Type<br><small>(PROPTYPE)</small></th>
-                        <th>Years Since Sale<br><small>(SALEDATE)</small></th>
+                        <th class="sortable" onclick="sortTable(0)">Property Address<br><small>(PREMISEADD)</small></th>
+                        <th class="sortable" onclick="sortTable(1)">Owner Name<br><small>(OWNERNAME)</small></th>
+                        <th class="sortable" onclick="sortTable(2)">Listing Probability</th>
+                        <th class="sortable" onclick="sortTable(3)">Risk Category</th>
+                        <th class="sortable" onclick="sortTable(4)">Assessment Value<br><small>(ASSESSMENT)</small></th>
+                        <th class="sortable" onclick="sortTable(5)">Ward<br><small>(PRMS_WARD)</small></th>
+                        <th class="sortable" onclick="sortTable(6)">Property Type<br><small>(PROPTYPE)</small></th>
+                        <th class="sortable" onclick="sortTable(7)">Years Since Sale<br><small>(SALEDATE)</small></th>
                     </tr>
                 </thead>
                 <tbody id="tableBody"></tbody>
@@ -607,14 +854,46 @@
         </div>
     </div>
 
+    <!-- Info Modal -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeInfoModal()">&times;</span>
+            <h2>About This Model</h2>
+            <p><strong>Purpose:</strong> This predictive model identifies DC properties with high likelihood of being listed for sale based on financial distress indicators and ownership patterns.</p>
+            
+            <h3>Key Factors Analyzed:</h3>
+            <ul>
+                <li><strong>Financial Distress:</strong> Properties with outstanding tax debt, liens, or high debt-to-assessment ratios</li>
+                <li><strong>Ownership Patterns:</strong> Estate properties, trust ownership, or corporate entities that may indicate distressed situations</li>
+                <li><strong>Property History:</strong> Time since last sale and assessment trends</li>
+                <li><strong>Location Analysis:</strong> Ward-based market conditions and property types</li>
+            </ul>
+            
+            <h3>Risk Categories:</h3>
+            <ul>
+                <li><strong>Extremely High (80%+):</strong> Properties showing multiple distress indicators</li>
+                <li><strong>Very High (60-80%):</strong> Properties with significant financial or ownership complexity</li>
+                <li><strong>High (40-60%):</strong> Properties with moderate distress signals</li>
+                <li><strong>Moderate (20-40%):</strong> Properties with some risk factors</li>
+                <li><strong>Low (<20%):</strong> Properties with minimal distress indicators</li>
+            </ul>
+            
+            <h3>Data Sources:</h3>
+            <p>This model uses publicly available DC property records, tax data, and ownership information to generate predictions. All data is current as of the last model update.</p>
+            
+            <p><em>Disclaimer: This is a predictive model for marketing purposes. Individual property situations may vary, and predictions should be used as guidance only.</em></p>
+        </div>
+    </div>
+
     <!-- Hidden print area for labels -->
     <div class="print-labels" id="printLabels"></div>
 
     <script>
-        // Global variable to hold property data
+        // Global variables
         let propertyData = [];
         let filteredData = [];
         let selectedRiskLevels = [];
+        let currentSort = { column: -1, direction: 'asc' };
 
         // Load property data from JSON file
         async function loadPropertyData() {
@@ -642,6 +921,23 @@
             } catch (error) {
                 console.error('Error loading property data:', error);
                 showErrorMessage('Failed to load property data. Please check that dc_property_predictions.json is available.');
+            }
+        }
+
+        // Show/hide info modal
+        function showInfoModal() {
+            document.getElementById('infoModal').style.display = 'block';
+        }
+
+        function closeInfoModal() {
+            document.getElementById('infoModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('infoModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
             }
         }
 
@@ -772,6 +1068,96 @@
             updateDisplay();
         }
         
+        // Table sorting functionality
+        function sortTable(columnIndex) {
+            const headers = document.querySelectorAll('.data-table th');
+            
+            // Update sort direction
+            if (currentSort.column === columnIndex) {
+                currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSort.column = columnIndex;
+                currentSort.direction = 'asc';
+            }
+            
+            // Update header classes
+            headers.forEach((header, index) => {
+                header.classList.remove('sort-asc', 'sort-desc');
+                if (index === columnIndex) {
+                    header.classList.add(currentSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
+                }
+            });
+            
+            // Sort the data
+            filteredData.sort((a, b) => {
+                let valueA, valueB;
+                
+                switch (columnIndex) {
+                    case 0: // Property Address
+                        valueA = (a.PREMISEADD || '').toLowerCase();
+                        valueB = (b.PREMISEADD || '').toLowerCase();
+                        break;
+                    case 1: // Owner Name
+                        valueA = (a.OWNERNAME || '').toLowerCase();
+                        valueB = (b.OWNERNAME || '').toLowerCase();
+                        break;
+                    case 2: // Listing Probability
+                        valueA = parseFloat(a.listing_probability) || 0;
+                        valueB = parseFloat(b.listing_probability) || 0;
+                        break;
+                    case 3: // Risk Category
+                        const riskOrder = { 'Extremely High': 5, 'Very High': 4, 'High': 3, 'Moderate': 2, 'Low': 1 };
+                        valueA = riskOrder[a.risk_category] || 0;
+                        valueB = riskOrder[b.risk_category] || 0;
+                        break;
+                    case 4: // Assessment
+                        valueA = parseFloat(a.ASSESSMENT) || 0;
+                        valueB = parseFloat(b.ASSESSMENT) || 0;
+                        break;
+                    case 5: // Ward
+                        valueA = parseInt(a.PRMS_WARD) || 0;
+                        valueB = parseInt(b.PRMS_WARD) || 0;
+                        break;
+                    case 6: // Property Type
+                        valueA = (a.PROPTYPE || '').toLowerCase();
+                        valueB = (b.PROPTYPE || '').toLowerCase();
+                        break;
+                    case 7: // Years Since Sale
+                        valueA = parseFloat(a.years_since_last_sale) || 0;
+                        valueB = parseFloat(b.years_since_last_sale) || 0;
+                        break;
+                    default:
+                        return 0;
+                }
+                
+                if (valueA < valueB) return currentSort.direction === 'asc' ? -1 : 1;
+                if (valueA > valueB) return currentSort.direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+            
+            updateTable();
+        }
+        
+        // Table search functionality
+        function searchTable() {
+            const searchTerm = document.getElementById('tableSearch').value.toLowerCase();
+            const rows = document.querySelectorAll('#tableBody tr');
+            
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                let found = false;
+                
+                cells.forEach(cell => {
+                    const text = cell.textContent.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        found = true;
+                    }
+                });
+                
+                row.style.display = found ? '' : 'none';
+            });
+        }
+        
         function updateDisplay() {
             updateStats();
             updateTable();
@@ -795,34 +1181,34 @@
             const tableBody = document.getElementById('tableBody');
             const resultsTable = document.getElementById('resultsTable');
             const noDataMessage = document.getElementById('noDataMessage');
+            const tableControls = document.getElementById('tableControls');
             
             if (filteredData.length === 0) {
                 resultsTable.style.display = 'none';
                 noDataMessage.style.display = 'block';
+                tableControls.style.display = 'none';
                 return;
             }
             
             resultsTable.style.display = 'table';
             noDataMessage.style.display = 'none';
+            tableControls.style.display = 'flex';
             
             tableBody.innerHTML = filteredData.map(property => {
                 const probability = parseFloat(property.listing_probability) || 0;
                 const assessment = parseFloat(property.ASSESSMENT) || 0;
-                const totalBalance = parseFloat(property.TOTBALAMT) || 0;
                 const yearsSale = parseFloat(property.years_since_last_sale) || 0;
-                
-                // Format mailing address
-                const mailingAddress = [
-                    property.ADDRESS1,
-                    property.ADDRESS2,
-                    property.CITYSTZIP
-                ].filter(part => part && part.trim()).join(', ');
                 
                 return `
                     <tr>
-                        <td class="address-cell" title="${property.PREMISEADD || 'N/A'}">${property.PREMISEADD || 'N/A'}</td>
-                        <td class="owner-cell" title="${property.OWNERNAME || 'N/A'}">${property.OWNERNAME || 'N/A'}</td>
-                        <td class="address-cell" title="${mailingAddress}">${mailingAddress || 'N/A'}</td>
+                        <td class="truncated-cell">
+                            ${property.PREMISEADD || 'N/A'}
+                            <div class="tooltip">${property.PREMISEADD || 'N/A'}</div>
+                        </td>
+                        <td class="truncated-cell">
+                            ${property.OWNERNAME || 'N/A'}
+                            <div class="tooltip">${property.OWNERNAME || 'N/A'}</div>
+                        </td>
                         <td>
                             <div class="probability-container">
                                 <div class="probability-bar">
@@ -833,9 +1219,11 @@
                         </td>
                         <td><span class="risk-badge risk-${(property.risk_category || 'low').toLowerCase().replace(' ', '-')}">${property.risk_category || 'Low'}</span></td>
                         <td class="currency">${assessment.toLocaleString()}</td>
-                        <td class="currency">${totalBalance.toLocaleString()}</td>
                         <td>Ward ${property.PRMS_WARD || 'N/A'}</td>
-                        <td>${property.PROPTYPE || 'N/A'}</td>
+                        <td class="truncated-cell">
+                            ${property.PROPTYPE || 'N/A'}
+                            <div class="tooltip">${property.PROPTYPE || 'N/A'}</div>
+                        </td>
                         <td>${yearsSale.toFixed(1)} yrs</td>
                     </tr>
                 `;
@@ -951,65 +1339,7 @@
             printLabels.style.display = 'none';
         }
         
-        // Unit Test Functions
-        function runUnitTests() {
-            console.log('Running unit tests...');
-            
-            // Test 1: Property Type Filter Population
-            console.log('Test 1: Property Type Filter Population');
-            populatePropertyTypes();
-            const propertyTypeSelect = document.getElementById('propertyTypeFilter');
-            const options = Array.from(propertyTypeSelect.options).map(option => option.value).filter(value => value !== '');
-            const expectedTypes = [...new Set(propertyData.map(p => p.PROPTYPE))].sort();
-            console.log('Expected types:', expectedTypes);
-            console.log('Actual options:', options.sort());
-            console.log('Test 1 passed:', JSON.stringify(options.sort()) === JSON.stringify(expectedTypes));
-            
-            // Test 2: Property Type Filter Functionality
-            console.log('\nTest 2: Property Type Filter Functionality');
-            document.getElementById('propertyTypeFilter').value = 'Commercial';
-            applyFilters();
-            const commercialProperties = filteredData.filter(p => p.PROPTYPE === 'Commercial');
-            const allCommercialInData = propertyData.filter(p => p.PROPTYPE === 'Commercial');
-            console.log('Filtered commercial properties:', commercialProperties.length);
-            console.log('Expected commercial properties:', allCommercialInData.length);
-            console.log('Test 2 passed:', commercialProperties.length === allCommercialInData.length);
-            
-            // Test 3: Remove Print Table Button
-            console.log('\nTest 3: Print Table Button Removal');
-            const printTableButton = document.querySelector('button[onclick="printTable()"]');
-            console.log('Print table button exists:', printTableButton !== null);
-            console.log('Test 3 passed (button should not exist):', printTableButton === null);
-            
-            // Test 4: Property Type Column in Table
-            console.log('\nTest 4: Property Type Column in Table');
-            document.getElementById('propertyTypeFilter').value = '';
-            applyFilters();
-            const tableHeaders = Array.from(document.querySelectorAll('#resultsTable th')).map(th => th.textContent);
-            const hasPropertyTypeColumn = tableHeaders.some(header => header.includes('Property Type'));
-            console.log('Table headers:', tableHeaders);
-            console.log('Has Property Type column:', hasPropertyTypeColumn);
-            console.log('Test 4 passed:', hasPropertyTypeColumn);
-            
-            // Test 5: CSV Export includes Property Type
-            console.log('\nTest 5: CSV Export includes Property Type');
-            const csvHeaders = [
-                'SSL', 'Property Address (PREMISEADD)', 'Owner Name (OWNERNAME)', 
-                'Mailing Address Line 1 (ADDRESS1)', 'Mailing Address Line 2 (ADDRESS2)', 
-                'City State Zip (CITYSTZIP)', 'Listing Probability', 'Risk Category', 
-                'Assessment (ASSESSMENT)', 'Total Balance Due (TOTBALAMT)', 'Ward (PRMS_WARD)', 
-                'Property Type (PROPTYPE)', 'Years Since Sale', 'Debt to Assessment Ratio',
-                'Financial Distress Score', 'Ownership Complexity Score'
-            ];
-            const hasPropertyTypeInCSV = csvHeaders.includes('Property Type (PROPTYPE)');
-            console.log('CSV headers include Property Type:', hasPropertyTypeInCSV);
-            console.log('Test 5 passed:', hasPropertyTypeInCSV);
-            
-            console.log('\n=== Unit Test Summary ===');
-            console.log('All tests completed. Check individual test results above.');
-        }
-        
-        // Update the DOMContentLoaded event listener
+        // Initialize application when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM loaded, initializing application...');
             
@@ -1018,9 +1348,6 @@
             
             // Load data and initialize
             loadPropertyData();
-            
-            // Uncomment the line below to run unit tests on page load
-            // runUnitTests();
         });
         
     </script>
