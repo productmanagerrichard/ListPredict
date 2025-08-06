@@ -449,43 +449,28 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             position: relative;
-            cursor: help;
+            cursor: pointer;
         }
         
-        .tooltip {
+        .custom-tooltip {
             visibility: hidden;
             background: #2d3748;
             color: white;
             text-align: left;
             border-radius: 8px;
             padding: 10px 15px;
-            position: absolute;
+            position: fixed;
             z-index: 10000;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
             opacity: 0;
             transition: opacity 0.3s, visibility 0.3s;
             font-size: 13px;
-            white-space: normal;
-            max-width: 300px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            margin-bottom: 5px;
+            white-space: nowrap;
+            max-width: 400px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             pointer-events: none;
         }
         
-        .tooltip::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: #2d3748 transparent transparent transparent;
-        }
-        
-        .truncated-cell:hover .tooltip {
+        .custom-tooltip.show {
             visibility: visible;
             opacity: 1;
         }
@@ -897,6 +882,34 @@
         let filteredData = [];
         let selectedRiskLevels = [];
         let currentSort = { column: -1, direction: 'asc' };
+        let tooltip = null;
+
+        // Tooltip functionality
+        function createTooltip() {
+            if (!tooltip) {
+                tooltip = document.createElement('div');
+                tooltip.className = 'custom-tooltip';
+                document.body.appendChild(tooltip);
+            }
+        }
+
+        function showTooltip(event, element) {
+            createTooltip();
+            const text = element.getAttribute('data-tooltip');
+            tooltip.textContent = text;
+            tooltip.classList.add('show');
+            
+            // Position tooltip near mouse cursor
+            const rect = element.getBoundingClientRect();
+            tooltip.style.left = (event.pageX + 10) + 'px';
+            tooltip.style.top = (event.pageY - 40) + 'px';
+        }
+
+        function hideTooltip() {
+            if (tooltip) {
+                tooltip.classList.remove('show');
+            }
+        }
 
         // Load property data from JSON file
         async function loadPropertyData() {
