@@ -557,7 +557,7 @@
         @media print {
             @page {
                 size: 8.5in 11in;
-                margin: 0;
+                margin: 0.5in 0.25in;
             }
             
             body * {
@@ -575,18 +575,19 @@
                 top: 0;
                 width: 100%;
                 background: white;
-                font-size: 10pt !important;
-                line-height: 1.2 !important;
+                font-family: Arial, sans-serif;
             }
             
             .label-page {
-                width: 8.5in;
-                height: 11in;
+                width: 8in;
+                height: 10in;
                 margin: 0;
-                padding: 0.5in 0.25in 0.5in 0.25in;
+                padding: 0;
                 page-break-after: always;
+                page-break-inside: avoid;
                 position: relative;
                 box-sizing: border-box;
+                display: block;
             }
             
             .label-page:last-child {
@@ -598,39 +599,53 @@
                 grid-template-columns: repeat(3, 2.625in);
                 grid-template-rows: repeat(10, 1in);
                 gap: 0.125in;
-                width: 100%;
+                width: 8in;
                 height: 10in;
-                justify-content: center;
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
             }
             
             .label {
                 width: 2.625in;
                 height: 1in;
                 border: none;
-                padding: 0.1in;
-                font-size: 10pt !important;
+                padding: 0.08in;
+                font-size: 10pt;
                 font-family: Arial, sans-serif;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
+                align-items: flex-start;
                 overflow: hidden;
-                line-height: 1.2 !important;
+                line-height: 1.2;
                 break-inside: avoid;
                 page-break-inside: avoid;
                 box-sizing: border-box;
                 background: white;
+                margin: 0;
             }
             
             .label-name {
                 font-weight: bold;
-                margin-bottom: 3px;
-                font-size: 10pt !important;
-                line-height: 1.1 !important;
+                margin: 0 0 2pt 0;
+                padding: 0;
+                font-size: 10pt;
+                line-height: 1.1;
+                width: 100%;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
             }
             
             .label-address {
-                font-size: 9pt !important;
-                line-height: 1.2 !important;
+                font-size: 9pt;
+                line-height: 1.2;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                white-space: pre-line;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
             }
         }
         
@@ -1370,14 +1385,30 @@
             const printLabels = document.getElementById('printLabels');
             printLabels.innerHTML = '';
             
-            // Group labels into pages of 30 (3 columns x 10 rows for Avery 5160)
+            // Group labels into pages of 30 (3 columns x 10 rows for Avery 8160)
             const labelsPerPage = 30;
-            const pages = Math.ceil(filteredData.length / labelsPerPage);
+            const totalPages = Math.ceil(filteredData.length / labelsPerPage);
             
-            for (let page = 0; page < pages; page++) {
+            // Filter out properties without complete mailing addresses first
+            const validProperties = filteredData.filter(property => {
+                const ownerName = (property.OWNERNAME || '').trim();
+                const hasAddress = (property.ADDRESS1 && property.ADDRESS1.trim()) || 
+                                 (property.ADDRESS2 && property.ADDRESS2.trim()) || 
+                                 (property.CITYSTZIP && property.CITYSTZIP.trim());
+                return ownerName && hasAddress;
+            });
+            
+            if (validProperties.length === 0) {
+                alert('No properties have complete mailing addresses for printing');
+                return;
+            }
+            
+            const actualPages = Math.ceil(validProperties.length / labelsPerPage);
+            
+            for (let page = 0; page < actualPages; page++) {
                 const startIndex = page * labelsPerPage;
-                const endIndex = Math.min(startIndex + labelsPerPage, filteredData.length);
-                const pageData = filteredData.slice(startIndex, endIndex);
+                const endIndex = Math.min(startIndex + labelsPerPage, validProperties.length);
+                const pageData = validProperties.slice(startIndex, endIndex);
                 
                 const labelPage = document.createElement('div');
                 labelPage.className = 'label-page';
@@ -1385,45 +1416,38 @@
                 const labelGrid = document.createElement('div');
                 labelGrid.className = 'label-grid';
                 
-                // Fill the grid with actual labels first
-                pageData.forEach(property => {
+                // Create exactly 30 label slots per page
+                for (let i = 0; i < labelsPerPage; i++) {
                     const label = document.createElement('div');
                     label.className = 'label';
                     
-                    // Build complete mailing address
-                    const addressParts = [];
-                    if (property.ADDRESS1 && property.ADDRESS1.trim()) {
-                        addressParts.push(property.ADDRESS1.trim());
+                    if (i < pageData.length) {
+                        const property = pageData[i];
+                        
+                        // Build complete mailing address
+                        const addressParts = [];
+                        if (property.ADDRESS1 && property.ADDRESS1.trim()) {
+                            addressParts.push(property.ADDRESS1.trim());
+                        }
+                        if (property.ADDRESS2 && property.ADDRESS2.trim()) {
+                            addressParts.push(property.ADDRESS2.trim());
+                        }
+                        if (property.CITYSTZIP && property.CITYSTZIP.trim()) {
+                            addressParts.push(property.CITYSTZIP.trim());
+                        }
+                        
+                        const mailingAddress = addressParts.join('\n');
+                        const ownerName = (property.OWNERNAME || '').trim();
+                        
+                        if (ownerName && mailingAddress) {
+                            label.innerHTML = `
+                                <div class="label-name">${ownerName}</div>
+                                <div class="label-address">${mailingAddress}</div>
+                            `;
+                        }
                     }
-                    if (property.ADDRESS2 && property.ADDRESS2.trim()) {
-                        addressParts.push(property.ADDRESS2.trim());
-                    }
-                    if (property.CITYSTZIP && property.CITYSTZIP.trim()) {
-                        addressParts.push(property.CITYSTZIP.trim());
-                    }
-                    
-                    const mailingAddress = addressParts.join('\n');
-                    const ownerName = (property.OWNERNAME || '').trim();
-                    
-                    // Only add label if we have both name and address
-                    if (ownerName && mailingAddress) {
-                        label.innerHTML = `
-                            <div class="label-name">${ownerName}</div>
-                            <div class="label-address">${mailingAddress}</div>
-                        `;
-                    } else {
-                        label.innerHTML = ''; // Empty label if incomplete data
-                    }
-                    
+                    // Always add the label div to maintain grid structure, even if empty
                     labelGrid.appendChild(label);
-                });
-                
-                // Fill remaining spots with empty labels to maintain grid structure
-                const remainingLabels = labelsPerPage - pageData.length;
-                for (let i = 0; i < remainingLabels; i++) {
-                    const emptyLabel = document.createElement('div');
-                    emptyLabel.className = 'label';
-                    labelGrid.appendChild(emptyLabel);
                 }
                 
                 labelPage.appendChild(labelGrid);
@@ -1431,8 +1455,12 @@
             }
             
             printLabels.style.display = 'block';
-            window.print();
-            printLabels.style.display = 'none';
+            
+            // Add a small delay to ensure DOM is ready
+            setTimeout(() => {
+                window.print();
+                printLabels.style.display = 'none';
+            }, 100);
         }
         
         // Initialize application when DOM is loaded
