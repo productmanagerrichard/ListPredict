@@ -1269,7 +1269,7 @@
                         <td>
                             <div class="probability-container">
                                 <div class="probability-bar">
-                                    <div class="probability-fill" style="width: ${probability * 100}%; background: ${getProbabilityColor(probability)}"></div>
+                                    <div class="probability-fill" style="width: ${probability * 100}%; background: ${getProbabilityColor(property.risk_category)}"></div>
                                 </div>
                                 <div class="probability-text">${(probability * 100).toFixed(1)}%</div>
                             </div>
@@ -1287,12 +1287,20 @@
             }).join('');
         }
         
-        function getProbabilityColor(probability) {
-            if (probability >= 0.8) return 'linear-gradient(135deg, #10b981 0%, #059669 100%)'; // Green for extremely high
-            if (probability >= 0.6) return 'linear-gradient(135deg, #f59e0b 0%, #ea580c 100%)'; // Orange for very high  
-            if (probability >= 0.4) return 'linear-gradient(135deg, #ea580c 0%, #dc2626 100%)'; // Orange-red for high
-            if (probability >= 0.2) return 'linear-gradient(135deg, #fb7185 0%, #f43f5e 100%)'; // Pink for moderate
-            return 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)'; // Red for low
+        function getProbabilityColor(riskCategory) {
+            switch(riskCategory) {
+                case 'Extremely High':
+                    return 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                case 'Very High':
+                    return 'linear-gradient(135deg, #f59e0b 0%, #ea580c 100%)';
+                case 'High':
+                    return 'linear-gradient(135deg, #ea580c 0%, #dc2626 100%)';
+                case 'Moderate':
+                    return 'linear-gradient(135deg, #fb7185 0%, #f43f5e 100%)';
+                case 'Low':
+                default:
+                    return 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)';
+            }
         }
         
         function exportResults() {
