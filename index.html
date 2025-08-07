@@ -553,8 +553,13 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* Print styles for Avery 5160 labels */
+        /* Print styles for Avery 8160 labels */
         @media print {
+            @page {
+                size: 8.5in 11in;
+                margin: 0;
+            }
+            
             body * {
                 visibility: hidden;
             }
@@ -578,9 +583,10 @@
                 width: 8.5in;
                 height: 11in;
                 margin: 0;
-                padding: 0.5in 0.1875in;
+                padding: 0.5in 0.25in 0.5in 0.25in;
                 page-break-after: always;
                 position: relative;
+                box-sizing: border-box;
             }
             
             .label-page:last-child {
@@ -591,34 +597,40 @@
                 display: grid;
                 grid-template-columns: repeat(3, 2.625in);
                 grid-template-rows: repeat(10, 1in);
-                gap: 0.125in 0.125in;
+                gap: 0.125in;
                 width: 100%;
-                height: 100%;
+                height: 10in;
+                justify-content: center;
             }
             
             .label {
-                border: 1px solid transparent;
-                padding: 0.08in;
-                font-size: 9pt !important;
+                width: 2.625in;
+                height: 1in;
+                border: none;
+                padding: 0.1in;
+                font-size: 10pt !important;
                 font-family: Arial, sans-serif;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
                 overflow: hidden;
-                line-height: 1.1 !important;
+                line-height: 1.2 !important;
                 break-inside: avoid;
                 page-break-inside: avoid;
+                box-sizing: border-box;
+                background: white;
             }
             
             .label-name {
                 font-weight: bold;
-                margin-bottom: 2px;
-                font-size: 9pt !important;
+                margin-bottom: 3px;
+                font-size: 10pt !important;
+                line-height: 1.1 !important;
             }
             
             .label-address {
-                font-size: 8pt !important;
-                line-height: 1.1 !important;
+                font-size: 9pt !important;
+                line-height: 1.2 !important;
             }
         }
         
@@ -765,23 +777,23 @@
                         <div class="multi-select-options" id="riskOptions">
                             <div class="multi-select-option">
                                 <input type="checkbox" id="risk_extremely_high" value="Extremely High">
-                                <label for="risk_extremely_high">Extremely High (80%+)</label>
+                                <label for="risk_extremely_high">Extremely High</label>
                             </div>
                             <div class="multi-select-option">
                                 <input type="checkbox" id="risk_very_high" value="Very High">
-                                <label for="risk_very_high">Very High (60-80%)</label>
+                                <label for="risk_very_high">Very High</label>
                             </div>
                             <div class="multi-select-option">
                                 <input type="checkbox" id="risk_high" value="High">
-                                <label for="risk_high">High (40-60%)</label>
+                                <label for="risk_high">High</label>
                             </div>
                             <div class="multi-select-option">
                                 <input type="checkbox" id="risk_moderate" value="Moderate">
-                                <label for="risk_moderate">Moderate (20-40%)</label>
+                                <label for="risk_moderate">Moderate</label>
                             </div>
                             <div class="multi-select-option">
                                 <input type="checkbox" id="risk_low" value="Low">
-                                <label for="risk_low">Low (<20%)</label>
+                                <label for="risk_low">Low</label>
                             </div>
                         </div>
                     </div>
@@ -913,11 +925,11 @@
             
             <h3>Risk Categories:</h3>
             <ul>
-                <li><strong>Extremely High (80%+):</strong> Properties showing multiple distress indicators</li>
-                <li><strong>Very High (60-80%):</strong> Properties with significant financial or ownership complexity</li>
-                <li><strong>High (40-60%):</strong> Properties with moderate distress signals</li>
-                <li><strong>Moderate (20-40%):</strong> Properties with some risk factors</li>
-                <li><strong>Low (<20%):</strong> Properties with minimal distress indicators</li>
+                <li><strong>Extremely High:</strong> Properties showing multiple distress indicators</li>
+                <li><strong>Very High:</strong> Properties with significant financial or ownership complexity</li>
+                <li><strong>High:</strong> Properties with moderate distress signals</li>
+                <li><strong>Moderate:</strong> Properties with some risk factors</li>
+                <li><strong>Low:</strong> Properties with minimal distress indicators</li>
             </ul>
             
             <h3>Data Sources:</h3>
