@@ -143,6 +143,18 @@
             font-size: 15px;
             transition: all 0.3s ease;
             background: white;
+            position: relative;
+        }
+
+        /* Modern dropdown styling */
+        .control-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px;
+            padding-right: 45px;
+            cursor: pointer;
         }
         
         .control-group select:focus,
@@ -161,10 +173,26 @@
             background: white;
             border: 2px solid #e2e8f0;
             border-radius: 12px;
-            padding: 14px 16px;
+            padding: 14px 45px 14px 16px;
             cursor: pointer;
             user-select: none;
             transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .multi-select-dropdown::after {
+            content: "";
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 20px;
+            pointer-events: none;
         }
         
         .multi-select-dropdown:hover {
@@ -392,13 +420,13 @@
         }
         
         .risk-very-high {
-            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+            background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
             color: white;
         }
         
         .risk-high {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            color: #1f2937;
+            background: linear-gradient(135deg, #ea580c 0%, #dc2626 100%);
+            color: white;
         }
         
         .risk-moderate {
@@ -407,7 +435,7 @@
         }
         
         .risk-low {
-            background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
             color: white;
         }
         
@@ -525,7 +553,7 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* Print styles for Avery labels */
+        /* Print styles for Avery 5160 labels */
         @media print {
             body * {
                 visibility: hidden;
@@ -542,6 +570,8 @@
                 top: 0;
                 width: 100%;
                 background: white;
+                font-size: 10pt !important;
+                line-height: 1.2 !important;
             }
             
             .label-page {
@@ -550,35 +580,45 @@
                 margin: 0;
                 padding: 0.5in 0.1875in;
                 page-break-after: always;
+                position: relative;
+            }
+            
+            .label-page:last-child {
+                page-break-after: auto;
             }
             
             .label-grid {
                 display: grid;
                 grid-template-columns: repeat(3, 2.625in);
                 grid-template-rows: repeat(10, 1in);
-                gap: 0.125in;
+                gap: 0.125in 0.125in;
                 width: 100%;
                 height: 100%;
             }
             
             .label {
-                border: 1px solid #ccc;
-                padding: 0.1in;
-                font-size: 11pt;
+                border: 1px solid transparent;
+                padding: 0.08in;
+                font-size: 9pt !important;
                 font-family: Arial, sans-serif;
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
+                justify-content: flex-start;
                 overflow: hidden;
+                line-height: 1.1 !important;
+                break-inside: avoid;
+                page-break-inside: avoid;
             }
             
             .label-name {
                 font-weight: bold;
                 margin-bottom: 2px;
+                font-size: 9pt !important;
             }
             
             .label-address {
-                line-height: 1.2;
+                font-size: 8pt !important;
+                line-height: 1.1 !important;
             }
         }
         
@@ -725,23 +765,23 @@
                         <div class="multi-select-options" id="riskOptions">
                             <div class="multi-select-option">
                                 <input type="checkbox" id="risk_extremely_high" value="Extremely High">
-                                <label for="risk_extremely_high">🟢 Extremely High (80%+)</label>
+                                <label for="risk_extremely_high">Extremely High (80%+)</label>
                             </div>
                             <div class="multi-select-option">
                                 <input type="checkbox" id="risk_very_high" value="Very High">
-                                <label for="risk_very_high">🟡 Very High (60-80%)</label>
+                                <label for="risk_very_high">Very High (60-80%)</label>
                             </div>
                             <div class="multi-select-option">
                                 <input type="checkbox" id="risk_high" value="High">
-                                <label for="risk_high">🟠 High (40-60%)</label>
+                                <label for="risk_high">High (40-60%)</label>
                             </div>
                             <div class="multi-select-option">
                                 <input type="checkbox" id="risk_moderate" value="Moderate">
-                                <label for="risk_moderate">🔴 Moderate (20-40%)</label>
+                                <label for="risk_moderate">Moderate (20-40%)</label>
                             </div>
                             <div class="multi-select-option">
                                 <input type="checkbox" id="risk_low" value="Low">
-                                <label for="risk_low">⚫ Low (<20%)</label>
+                                <label for="risk_low">Low (<20%)</label>
                             </div>
                         </div>
                     </div>
@@ -814,16 +854,16 @@
                 <div class="stat-label">Total Properties</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" id="highRiskCount">0</div>
-                <div class="stat-label">High Opportunity (60%+)</div>
-            </div>
-            <div class="stat-card">
                 <div class="stat-value" id="avgProbability">0%</div>
                 <div class="stat-label">Avg Listing Probability</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" id="avgDebtRatio">0%</div>
-                <div class="stat-label">Avg Debt/Assessment Ratio</div>
+                <div class="stat-value" id="mostCommonWard">-</div>
+                <div class="stat-label">Most Common Ward</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="mostCommonPropertyType">-</div>
+                <div class="stat-label">Most Common Property Type</div>
             </div>
         </div>
         
@@ -1167,16 +1207,31 @@
         
         function updateStats() {
             const totalProperties = filteredData.length;
-            const highRiskCount = filteredData.filter(p => parseFloat(p.listing_probability) >= 0.6).length;
             const avgProbability = totalProperties > 0 ? 
                 (filteredData.reduce((sum, p) => sum + parseFloat(p.listing_probability), 0) / totalProperties * 100).toFixed(1) : 0;
-            const avgDebtRatio = totalProperties > 0 ?
-                (filteredData.reduce((sum, p) => sum + parseFloat(p.debt_to_assessment_ratio), 0) / totalProperties * 100).toFixed(1) : 0;
+            
+            // Calculate most common ward
+            const wardCounts = {};
+            filteredData.forEach(p => {
+                const ward = p.PRMS_WARD || 'Unknown';
+                wardCounts[ward] = (wardCounts[ward] || 0) + 1;
+            });
+            const mostCommonWard = Object.keys(wardCounts).length > 0 ? 
+                Object.keys(wardCounts).reduce((a, b) => wardCounts[a] > wardCounts[b] ? a : b) : '-';
+            
+            // Calculate most common property type
+            const typeCounts = {};
+            filteredData.forEach(p => {
+                const type = p.PROPTYPE || 'Unknown';
+                typeCounts[type] = (typeCounts[type] || 0) + 1;
+            });
+            const mostCommonType = Object.keys(typeCounts).length > 0 ? 
+                Object.keys(typeCounts).reduce((a, b) => typeCounts[a] > typeCounts[b] ? a : b) : '-';
             
             document.getElementById('totalProperties').textContent = totalProperties.toLocaleString();
-            document.getElementById('highRiskCount').textContent = highRiskCount.toLocaleString();
             document.getElementById('avgProbability').textContent = avgProbability + '%';
-            document.getElementById('avgDebtRatio').textContent = avgDebtRatio + '%';
+            document.getElementById('mostCommonWard').textContent = mostCommonWard === 'Unknown' ? '-' : `Ward ${mostCommonWard}`;
+            document.getElementById('mostCommonPropertyType').textContent = mostCommonType === 'Unknown' ? '-' : mostCommonType;
         }
         
         function updateTable() {
@@ -1233,11 +1288,11 @@
         }
         
         function getProbabilityColor(probability) {
-            if (probability >= 0.8) return 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-            if (probability >= 0.6) return 'linear-gradient(135deg, #34d399 0%, #10b981 100%)';
-            if (probability >= 0.4) return 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)';
-            if (probability >= 0.2) return 'linear-gradient(135deg, #fb7185 0%, #f43f5e 100%)';
-            return 'linear-gradient(135deg, #94a3b8 0%, #64748b 100%)';
+            if (probability >= 0.8) return 'linear-gradient(135deg, #10b981 0%, #059669 100%)'; // Green for extremely high
+            if (probability >= 0.6) return 'linear-gradient(135deg, #f59e0b 0%, #ea580c 100%)'; // Orange for very high  
+            if (probability >= 0.4) return 'linear-gradient(135deg, #ea580c 0%, #dc2626 100%)'; // Orange-red for high
+            if (probability >= 0.2) return 'linear-gradient(135deg, #fb7185 0%, #f43f5e 100%)'; // Pink for moderate
+            return 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)'; // Red for low
         }
         
         function exportResults() {
@@ -1310,26 +1365,45 @@
                 const labelGrid = document.createElement('div');
                 labelGrid.className = 'label-grid';
                 
-                // Fill the grid with labels
-                for (let i = 0; i < labelsPerPage; i++) {
+                // Fill the grid with actual labels first
+                pageData.forEach(property => {
                     const label = document.createElement('div');
                     label.className = 'label';
                     
-                    if (i < pageData.length) {
-                        const property = pageData[i];
-                        const mailingAddress = [
-                            property.ADDRESS1,
-                            property.ADDRESS2,
-                            property.CITYSTZIP
-                        ].filter(part => part && part.trim()).join('\n');
-                        
+                    // Build complete mailing address
+                    const addressParts = [];
+                    if (property.ADDRESS1 && property.ADDRESS1.trim()) {
+                        addressParts.push(property.ADDRESS1.trim());
+                    }
+                    if (property.ADDRESS2 && property.ADDRESS2.trim()) {
+                        addressParts.push(property.ADDRESS2.trim());
+                    }
+                    if (property.CITYSTZIP && property.CITYSTZIP.trim()) {
+                        addressParts.push(property.CITYSTZIP.trim());
+                    }
+                    
+                    const mailingAddress = addressParts.join('\n');
+                    const ownerName = (property.OWNERNAME || '').trim();
+                    
+                    // Only add label if we have both name and address
+                    if (ownerName && mailingAddress) {
                         label.innerHTML = `
-                            <div class="label-name">${property.OWNERNAME || ''}</div>
-                            <div class="label-address">${mailingAddress || ''}</div>
+                            <div class="label-name">${ownerName}</div>
+                            <div class="label-address">${mailingAddress}</div>
                         `;
+                    } else {
+                        label.innerHTML = ''; // Empty label if incomplete data
                     }
                     
                     labelGrid.appendChild(label);
+                });
+                
+                // Fill remaining spots with empty labels to maintain grid structure
+                const remainingLabels = labelsPerPage - pageData.length;
+                for (let i = 0; i < remainingLabels; i++) {
+                    const emptyLabel = document.createElement('div');
+                    emptyLabel.className = 'label';
+                    labelGrid.appendChild(emptyLabel);
                 }
                 
                 labelPage.appendChild(labelGrid);
